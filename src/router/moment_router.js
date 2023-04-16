@@ -15,6 +15,8 @@ momentRouter.post(
 )
 // 查看详情列表
 momentRouter.post('/list', verifyToken, momentController.list)
+// 查看详情列表既评论详情
+momentRouter.post('/listDetails', verifyToken, momentController.listDetails)
 // 删除
 momentRouter.get(
   '/deletePost/:momentId',

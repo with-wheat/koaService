@@ -17,13 +17,26 @@ class moment {
       }
     }
   }
-  // 获取发帖列表信息
+  // 获取发帖列表信息只查看评论个数
   async list(ctx, next) {
     const { page, limit } = ctx.request.body
     if (!page || !limit) {
       return ctx.app.emit('error', THE_PARAMETER_IS_WRONG, ctx)
     }
     const result = await moment_service.list(ctx.request.body)
+    ctx.body = {
+      code: 200,
+      message: '查询成功',
+      data: result,
+    }
+  }
+  // 获取发帖列表信息和评论详情信息
+  async listDetails(ctx, next) {
+    const { page, limit } = ctx.request.body
+    if (!page || !limit) {
+      return ctx.app.emit('error', THE_PARAMETER_IS_WRONG, ctx)
+    }
+    const result = await moment_service.listDetails(ctx.request.body)
     ctx.body = {
       code: 200,
       message: '查询成功',
