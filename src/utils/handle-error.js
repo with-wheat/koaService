@@ -54,7 +54,7 @@ app.on('error', (error, ctx) => {
 
     case OPERATION_IS_NOT_ALLOWED:
       code = -1009
-      message = '不允许操作'
+      message = '操作失败,暂无权限'
       break
 
     default:

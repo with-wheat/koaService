@@ -1,6 +1,9 @@
 const { OPERATION_IS_NOT_ALLOWED } = require('../config/error')
 const PermissionService = require('../service/permission.service')
 
+/**
+ * 验证权限，没有权限不予许操作
+ */
 const verifyPermission = async (ctx, next) => {
   const { id } = ctx.user
   const keyName = Object.keys(ctx.params)[0]

@@ -9,8 +9,6 @@ const md5Password = require('../utils/md5-password')
 
 /**
  * 验证用户是否存在
- * @param {*} ctx
- * @param {*} next
  * @returns
  */
 const verifyUser = async (ctx, next) => {
@@ -31,8 +29,6 @@ const verifyUser = async (ctx, next) => {
 
 /**
  * 验证修改用户是否存在
- * @param {*} ctx
- * @param {*} next
  * @returns
  */
 const setVerifyUser = async (ctx, next) => {
@@ -53,9 +49,7 @@ const setVerifyUser = async (ctx, next) => {
 }
 
 /**
- * 加密密码中间件
- * @param {*} ctx
- * @param {*} next
+ * 对密码进行加密的中间件
  */
 const handlePassword = async (ctx, next) => {
   const { password } = ctx.request.body

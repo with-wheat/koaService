@@ -11,9 +11,6 @@ const jwt = require('jsonwebtoken')
 const { PUBLICKEY } = require('../config/screct')
 /**
  * 登录中间件
- * @param {*} ctx
- * @param {*} next
- * @returns
  */
 const verifyLogin = async (ctx, next) => {
   // 验证用户名和密码是否为空

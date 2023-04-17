@@ -1,5 +1,6 @@
 const koaRouter = require('@koa/router')
 const momentController = require('../controller/moment.controller')
+const { verifyLabelExists } = require('../middleware/label_middeware')
 const { verifyToken } = require('../middleware/login_middeware')
 const { verifyPermission } = require('../middleware/permission_moddeware')
 
@@ -16,7 +17,11 @@ momentRouter.post(
 // 查看详情列表
 momentRouter.post('/list', verifyToken, momentController.list)
 // 查看详情列表既评论详情
-momentRouter.post('/listDetails', verifyToken, momentController.listDetails)
+momentRouter.get(
+  '/listDetails/:momentId',
+  verifyToken,
+  momentController.listDetails
+)
 // 删除
 momentRouter.get(
   '/deletePost/:momentId',
@@ -26,5 +31,14 @@ momentRouter.get(
 )
 // 获取详情
 momentRouter.get('/:momentId', verifyToken, momentController.details)
+
+// 添加标签
+momentRouter.post(
+  '/:momentId/labels',
+  verifyToken,
+  verifyPermission,
+  verifyLabelExists,
+  momentController.addLabel
+)
 
 module.exports = momentRouter

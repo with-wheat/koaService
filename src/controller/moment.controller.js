@@ -32,11 +32,11 @@ class moment {
   }
   // 获取发帖列表信息和评论详情信息
   async listDetails(ctx, next) {
-    const { page, limit } = ctx.request.body
-    if (!page || !limit) {
+    const { momentId } = ctx.params
+    if (!momentId) {
       return ctx.app.emit('error', THE_PARAMETER_IS_WRONG, ctx)
     }
-    const result = await moment_service.listDetails(ctx.request.body)
+    const result = await moment_service.listDetails(momentId)
     ctx.body = {
       code: 200,
       message: '查询成功',
@@ -81,6 +81,36 @@ class moment {
       ctx.body = {
         code: 204,
         message: '修改失败',
+      }
+    }
+  }
+  /**
+   * 新增标签
+   */
+  async addLabel(ctx, next) {
+    const { labels } = ctx
+    const { momentId } = ctx.params
+    if (!momentId) {
+      return ctx.app.emit('error', THE_PARAMETER_IS_WRONG, ctx)
+    }
+
+    try {
+      for (const label of labels) {
+        const isExists = await moment_service.findLabel(momentId, label.id)
+        if (!isExists) {
+          const result = await moment_service.addLabel(momentId, label.id)
+          ctx.body = {
+            code: 200,
+            message: '标签新增成功！',
+            data: result,
+          }
+        }
+      }
+    } catch (error) {
+      ctx.body = {
+        code: 404,
+        message: '标签新增失败！',
+        data: error,
       }
     }
   }

@@ -1,0 +1,12 @@
+# dependencies
+/node_modules
+/.pnp
+
+# testing
+/uploads
+
+
+# production
+/build
+/dist
+
