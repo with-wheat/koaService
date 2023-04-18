@@ -1,6 +1,8 @@
-const verifyUser = require('../middleware/user.middeware')
+const file_service = require('../service/file_service')
 const user_service = require('../service/user_service')
-
+const fs = require('fs')
+const { UPLOAD_PATH } = require('../config/path')
+const { THE_PARAMETER_IS_WRONG } = require('../config/error')
 class UserController {
   async create(ctx, next) {
     // 获取信息是否齐全参数
@@ -14,6 +16,9 @@ class UserController {
       data: result,
     }
   }
+  /**
+   *删除用户信息
+   */
   async delete(ctx, next) {
     const { userId } = ctx.request.body
     const result = await user_service.delete(userId)
@@ -29,11 +34,15 @@ class UserController {
    * @param {*} next
    */
   async update(ctx, next) {
+    console.log(1)
     // 获取编辑信息
-    const user = ctx.request.body
-
+    const { name, password } = ctx.request.body
+    if (!name || !password) {
+      ctx.app.emit('error', THE_PARAMETER_IS_WRONG, ctx)
+    }
+    const { id } = ctx.user
     // 信息存储
-    const result = await user_service.updateInfo(user)
+    const result = await user_service.updateInfo(name, password, id)
     ctx.body = {
       message: '用户信息修改成功',
       data: result,
@@ -52,6 +61,15 @@ class UserController {
         message: '密码错误',
       }
     }
+  }
+  // 获取头像
+  async avatarImg(ctx, next) {
+    const { userId } = ctx.params
+    const result = await file_service.avatarUserImg(userId)
+    const { filename, mimetype } = result
+    ctx.type = mimetype
+    // 获取图片信息，创建可读流返回
+    ctx.body = fs.createReadStream(`${UPLOAD_PATH}/${filename}`)
   }
 }
 

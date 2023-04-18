@@ -37,9 +37,7 @@ class UserService {
    * @param {用户信息} user
    * @returns
    */
-  async updateInfo(user) {
-    const { name, password, id } = user
-
+  async updateInfo(name, password, id) {
     const statement =
       'UPDATE `user` SET `user`.`name`=?,`user`.`password`=? WHERE `user`.id=?'
     const [result] = await connection.execute(statement, [name, password, id])
@@ -58,6 +56,17 @@ class UserService {
       return true
     }
     return false
+  }
+
+  // 保存用户头像地址
+  async saveAvatarImg(userId, avatarImg) {
+    try {
+      const statement = 'UPDATE user SET avatarUrl = ?  WHERE id = ?'
+      const [result] = await connection.execute(statement, [avatarImg, userId])
+      return result
+    } catch (error) {
+      return console.log(error)
+    }
   }
 }
 

@@ -1,8 +1,9 @@
 const multer = require('@koa/multer')
+const { UPLOAD_PATH } = require('../config/path')
 
-// 上传头像中间件
+// 上传头像中间件 数据文件存储地址UPLOAD_PATH
 const upLoadAvatar = multer({
-  dest: './uploads',
+  dest: `${UPLOAD_PATH}`,
 })
 /**
  * 处理头像上传

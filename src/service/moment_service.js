@@ -16,7 +16,7 @@ class momentService {
       // 计算查询的起始索引
       const startIndex = (page - 1) * limit
       const statement = `SELECT m.id momentId,m.content momentCount,m.createAt createTime,m.updateAt updateTime,
-      JSON_OBJECT('id',u.id,'name',u.name,'createTime',u.createAt,'updateTime',u.updateAt)user,
+      JSON_OBJECT('id',u.id,'name',u.name,'avatarUrl', u.avatarUrl, 'createTime',u.createAt,'updateTime',u.updateAt)user,
       (SELECT COUNT(*) FROM COMMENT c WHERE c.moment_id = m.id )commentCount,
       (SELECT COUNT(*) FROM moment_label ml WHERE ml.moment_id = m.id )labelCount
       FROM moment m LEFT JOIN user u ON m.user_id = u.id LIMIT ? OFFSET ?;`
@@ -38,7 +38,7 @@ class momentService {
   async listDetails(momentId) {
     try {
       const statement = `SELECT m.id momentId, m.content momentCount, m.createAt createTime, m.updateAt updateTime,
-                          JSON_OBJECT('id', u.id, 'name', u.name, 'createTime', u.createAt, 'updateTime', u.updateAt) user,
+                          JSON_OBJECT('id', u.id, 'name', u.name,'avatarUrl', u.avatarUrl ,'createTime', u.createAt, 'updateTime', u.updateAt) user,
                           (SELECT 
                           JSON_ARRAYAGG(
                             JSON_OBJECT('id',c.id,'content',c.content,'contentId',c.comment_id,
@@ -99,7 +99,7 @@ class momentService {
   // 获取详情
   async detailsPost(momentID) {
     const statement = `SELECT m.id momentID,m.content,m.createAt createTime,m.updateAt updateTime
-    ,JSON_OBJECT('userId',u.id,'userName',u.name,'createTime',u.createAt,'updateTime',u.updateAt) user
+    ,JSON_OBJECT('userId',u.id,'userName',u.name,'avatarUrl', u.avatarUrl,'createTime',u.createAt,'updateTime',u.updateAt) user
      FROM moment m LEFT JOIN user u ON m.user_id = u.id WHERE m.id = ?;`
     const [result] = await connection.execute(statement, [momentID])
     return result
