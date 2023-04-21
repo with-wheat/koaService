@@ -22,6 +22,9 @@ userRouter.post(
   verifyPermission,
   UserController.delete
 )
+// 获取用户信息
+userRouter.get('/', verifyToken, UserController.info)
+
 userRouter.post('/update', verifyToken, handlePassword, UserController.update)
 userRouter.post(
   '/login',

@@ -68,6 +68,14 @@ class UserService {
       return console.log(error)
     }
   }
+  /**
+   * 获取用户信息
+   */
+  async info(userId) {
+    const statement = 'SELECT id,name,avatarUrl FROM `user` WHERE `user`.id = ?'
+    const [result] = await connection.execute(statement, [userId])
+    return result[0]
+  }
 }
 
 module.exports = new UserService()

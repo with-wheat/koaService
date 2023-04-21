@@ -17,6 +17,18 @@ class UserController {
     }
   }
   /**
+   * 获取用户信息
+   */
+  async info(ctx, next) {
+    const { id } = ctx.user
+    const result = await user_service.info(id)
+    ctx.body = {
+      code: 200,
+      data: result,
+    }
+  }
+
+  /**
    *删除用户信息
    */
   async delete(ctx, next) {
@@ -34,7 +46,6 @@ class UserController {
    * @param {*} next
    */
   async update(ctx, next) {
-    console.log(1)
     // 获取编辑信息
     const { name, password } = ctx.request.body
     if (!name || !password) {
@@ -51,6 +62,7 @@ class UserController {
 
   async verifyInformation(ctx, next) {
     const user = ctx.request.body
+    console.log(11)
     const isOk = await user_service.verifyInformationCorrect(user)
     if (isOk) {
       ctx.body = {
